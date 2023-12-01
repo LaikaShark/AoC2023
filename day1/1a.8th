@@ -1,0 +1,42 @@
+true var, first
+var head-num
+var tail-num
+var sum
+
+: is-number? 
+  dup 47 > over 58 < and 
+;
+
+: main 
+ "input" f:open 
+ ( 
+  (
+   dup is-number?   
+    if 
+     48 -
+     first @ 
+     if
+      head-num !
+      false first !
+     else
+      tail-num !
+     then
+    else
+     drop
+    then 
+  )
+  s:each 
+  true first !
+  -1 tail-num @ n:=
+  if
+   head-num @ tail-num !
+  then
+  head-num @ 10 * tail-num @ n:+ sum @ n:+ sum !
+  -1 head-num !
+  -1 tail-num !
+ ) f:eachline 
+ f:close
+ sum @ . cr
+;
+main
+bye
