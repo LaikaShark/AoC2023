@@ -1,0 +1,56 @@
+true var, first
+-1 var, head-num
+-1 var, tail-num
+var sum
+
+: format-input
+  "one"   "o1e" replace!
+  "two"   "t2o" replace!
+  "three" "t3e" replace!
+  "four"  "f4r" replace!
+  "five"  "f5e" replace!
+  "six"   "s6x" replace!
+  "seven" "s7n" replace!
+  "eight" "e8t" replace!
+  "nine"  "n9e" replace!
+  "zero"  "z0o" replace!
+;
+
+: is-number? 
+  dup 47 > over 58 < and 
+;
+
+: main 
+ "input" f:open 
+ (
+  format-input
+  (
+   dup is-number?   
+   if 
+     48 -
+   first @ 
+     if
+       head-num !
+       false first !
+     else
+       tail-num !
+     then
+   else
+     drop
+   then 
+  )
+  s:each 
+  true first !
+  -1 tail-num @ n:=
+  if
+    head-num @ tail-num !
+  then
+  head-num @ 10 * tail-num @ n:+ sum @ n:+ sum !
+  -1 head-num !
+  -1 tail-num !
+ ) f:eachline 
+ f:close
+ sum @ . cr
+;
+main
+bye
