@@ -1,6 +1,6 @@
 true var, first
-var head-num
-var tail-num
+-1 var, head-num
+-1 var, tail-num
 var sum
 
 : is-number? 
@@ -9,27 +9,27 @@ var sum
 
 : main 
  "input" f:open 
- ( 
+ (
   (
    dup is-number?   
-    if 
+   if 
      48 -
-     first @ 
+   first @ 
      if
-      head-num !
-      false first !
+       head-num !
+       false first !
      else
-      tail-num !
+       tail-num !
      then
-    else
+   else
      drop
-    then 
+   then 
   )
   s:each 
   true first !
   -1 tail-num @ n:=
   if
-   head-num @ tail-num !
+    head-num @ tail-num !
   then
   head-num @ 10 * tail-num @ n:+ sum @ n:+ sum !
   -1 head-num !
