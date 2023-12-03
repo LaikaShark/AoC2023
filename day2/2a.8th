@@ -1,0 +1,81 @@
+var sum
+true var, valid
+1 var, game
+13 var, maxR \ 12 max
+14 var, maxG \ 13 max
+15 var, maxB \ 14 max
+
+: trim-head \ s -- [s-"game: X"] 
+    0 7 game @ G:>s s:len nip n:+ s:-
+;
+
+\ check each showing in a game
+: check-showing 
+    s:ltrim 
+    "," /                     \ split on each block
+    ( s:ltrim                 \ trim leading whitespace
+      cr dup . "   \t" .      \ output current check
+      \ check if red
+      "red" s:count-match     \ returns nonzero if found
+      if dup
+        -4 s:lsub >n          \ extract number from string
+        maxR @ n:<            \ less than max number? 
+        if
+          " OK" .
+        else
+          " BAD" .
+          false valid !
+        then
+      then
+      
+      "blue" s:count-match
+      if dup
+        -5 s:lsub >n
+        maxB @ n:< 
+        if
+          " OK" .
+        else
+          " BAD" .
+          false valid !
+        then
+      then
+      
+      "green" s:count-match
+      if dup
+        -6 s:lsub >n
+        maxG @ n:< 
+        if
+          " OK" .
+        else
+          " BAD" .
+          false valid !
+        then
+      then
+      drop
+    ) a:each
+;
+
+\ game xxx: show1; show2; shown
+
+: main 
+  "input" f:open 
+  (
+    trim-head \ remove "game: xxx" from string
+    ";" /     \ split line on ; to get each showing
+    cr "game: " . game @ . cr
+    "sum: " . sum @ . cr
+    ( check-showing ) a:each \ check each showing
+    valid @ 
+    if
+      game @ sum @ n:+ sum ! \ if all showings in game are valid, add game num to sum 
+    then
+    true valid !
+    1 game @ n:+ game ! \ increment game counter
+    cr
+  ) f:eachline 
+  cr
+  f:close
+  sum @ . cr
+;
+main
+bye
